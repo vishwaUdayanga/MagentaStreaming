@@ -1,16 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    tools:context=".LikedFragment">
+    android:layout_width="match_parent"
+    android:background="@color/black"
+    android:padding="10dp"
+    android:id="@+id/fragment_liked_songs">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:textSize="40sp"
-        android:text="Liked" />
+        android:layout_height="wrap_content"
+        android:id="@+id/liked_song_title"
+        android:text="Your Favourite songs"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:textSize="20dp"
+        android:textColor="@color/white"
+        />
 
-</FrameLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/liked_song_title"
+        android:id="@+id/liked_songs_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black" />
+
+</RelativeLayout>

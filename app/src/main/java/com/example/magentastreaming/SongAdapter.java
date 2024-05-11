@@ -1,0 +1,117 @@
+package com.example.magentastreaming;
+
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.util.ArrayList;
+
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>  {
+    private Context songContext;
+    private ArrayList<Song> songFiles;
+
+    StorageReference storageReference;
+
+    SongAdapter(Context songContext, ArrayList<Song> songFiles) {
+        this.songContext = songContext;
+        this.songFiles = songFiles;
+    }
+
+    @NonNull
+    @Override
+    public SongAdapter.SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(songContext).inflate(R.layout.item_song, parent, false);
+        return new SongAdapter.SongViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull SongAdapter.SongViewHolder holder, int position) {
+        holder.songTitle.setText(songFiles.get(position).getSongName());
+        holder.songDuration.setText(songFiles.get(position).getSongDuration());
+        holder.songArtist.setText(songFiles.get(position).getSongArtist());
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+        storageReference = FirebaseStorage.getInstance().getReference("genre_arts/"+songFiles.get(position).getSongArt()+".jpg");
+
+        try {
+            File localFile = File.createTempFile("tempFile", ".jpg");
+            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+                    if (bitmap!= null) {
+                        Glide.with(songContext).asBitmap()
+                                .load(bitmap)
+                                .apply(requestOptions)
+                                .into(holder.songArt);
+                    }
+                    else {
+                        Glide.with(songContext)
+                                .load(R.drawable.sample_bg)
+                                .apply(requestOptions)
+                                .into(holder.songArt);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(genreContext, PlayerActivity.class);
+//                intent.putExtra("position", position);
+//                genreContext.startActivity(intent);
+//            }
+//        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return songFiles.size();
+    }
+
+    public class SongViewHolder extends RecyclerView.ViewHolder {
+
+        TextView songTitle;
+
+        TextView songDuration;
+        TextView songArtist;
+
+        ImageView songArt;
+
+        public SongViewHolder(@NonNull View itemView) {
+            super(itemView);
+            songTitle = itemView.findViewById(R.id.song_name);
+            songArt = itemView.findViewById(R.id.song_img);
+            songDuration = itemView.findViewById(R.id.song_duration);
+            songArtist = itemView.findViewById(R.id.song_artist);
+        }
+    }
+}
