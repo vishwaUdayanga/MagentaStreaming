@@ -59,7 +59,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnStartAccount"
+        android:id="@+id/btnStartMagenta"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/txtCreatePassword"

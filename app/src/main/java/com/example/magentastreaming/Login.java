@@ -1,5 +1,6 @@
 package com.example.magentastreaming;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,25 +14,26 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class Login extends AppCompatActivity {
 
-    Button btnStartAccount;
+    Button btnStartMagenta;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        btnStartAccount = findViewById(R.id.btnStartAccount);
+        btnStartMagenta = findViewById(R.id.btnStartMagenta);
 
-        btnStartAccount.setOnClickListener(new View.OnClickListener() {
+        btnStartMagenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnStartAccountTapped();
+                btnStartMagentaTapped();
             }
         });
 
     }
 
-    private void btnStartAccountTapped() {
+    private void btnStartMagentaTapped() {
         Intent intent = new Intent(getApplicationContext(), Register.class);
         startActivity(intent);
     }
