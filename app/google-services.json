@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "325365817014",
+    "project_id": "magentastreaming",
+    "storage_bucket": "magentastreaming.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325365817014:android:846fec85b6ab363d4e1017",
+        "android_client_info": {
+          "package_name": "com.example.magentastreaming"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAjMYDkq9xsSoQBN2LiN8qHMM2q4o2Bykw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
