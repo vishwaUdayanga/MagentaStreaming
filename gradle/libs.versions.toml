@@ -9,11 +9,8 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 googleServices = "4.4.1"
 firebaseDatabase = "21.0.0"
-<<<<<<< Updated upstream
 firebaseStorage = "21.0.0"
-=======
 firebaseAuth = "23.0.0"
->>>>>>> Stashed changes
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -25,11 +22,8 @@ activity = { group = "androidx.activity", name = "activity", version.ref = "acti
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
-<<<<<<< Updated upstream
 firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
-=======
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
->>>>>>> Stashed changes
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

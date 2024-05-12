@@ -24,27 +24,25 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
-<<<<<<< Updated upstream
     Button btnStartMagenta;
-=======
+
 //    Button btnStartAccount;
     TextInputEditText editTextEmail,editTextPassword;
     Button buttonLogin;
     FirebaseAuth mAuth;
     Button textView;
->>>>>>> Stashed changes
 
-    @SuppressLint("MissingInflatedId")
-    @Override
-    public void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+//    @SuppressLint("MissingInflatedId")
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+//            Intent intent = new Intent(getApplicationContext(), Login.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,22 +50,8 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-<<<<<<< Updated upstream
         btnStartMagenta = findViewById(R.id.btnStartMagenta);
 
-        btnStartMagenta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnStartMagentaTapped();
-=======
-//        btnStartAccount = findViewById(R.id.btnStartAccount);
-
-//        btnStartAccount.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                btnStartAccountTapped();
-//            }
-//        });
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.txtEmailEdit);
         editTextPassword = findViewById(R.id.txtCreatePasswordEdit);
@@ -106,7 +90,7 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Login.this, "Login Successful",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                                    Intent intent = new Intent(getApplicationContext(), AppHolder.class);
                                     startActivity(intent);
                                     finish();
                                 } else {
@@ -117,21 +101,8 @@ public class Login extends AppCompatActivity {
                                 }
                             }
                         });
->>>>>>> Stashed changes
             }
         });
 
     }
-
-<<<<<<< Updated upstream
-    private void btnStartMagentaTapped() {
-        Intent intent = new Intent(getApplicationContext(), Register.class);
-        startActivity(intent);
-    }
-=======
-//    private void btnStartAccountTapped() {
-//        Intent intent = new Intent(getApplicationContext(), Register.class);
-//        startActivity(intent);
-//    }
->>>>>>> Stashed changes
 }
