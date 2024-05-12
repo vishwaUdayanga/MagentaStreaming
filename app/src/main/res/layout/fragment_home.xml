@@ -9,37 +9,38 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <RelativeLayout
-        android:id="@+id/search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@drawable/search_bg"
-        android:padding="15dp">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/search_bar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:background="@drawable/search_bg"-->
+<!--        android:padding="15dp">-->
 
-        <ImageView
-            android:id="@+id/search_icon"
-            android:layout_width="20dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/search" />
+<!--        <ImageView-->
+<!--            android:id="@+id/search_icon"-->
+<!--            android:layout_width="20dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:src="@drawable/search" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="20dp"
-            android:layout_toEndOf="@+id/search_icon"
-            android:text="Search music..."
-            android:textColor="@color/gray"
-            android:textSize="15dp" />
+<!--        <TextView-->
+<!--            android:id="@+id/txt_search"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginLeft="20dp"-->
+<!--            android:layout_toEndOf="@+id/search_icon"-->
+<!--            android:text="Search music..."-->
+<!--            android:textColor="@color/gray"-->
+<!--            android:textSize="15dp" />-->
 
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/main_song"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_below="@+id/search_bar"
+
         android:layout_marginTop="30dp"
         android:background="@drawable/home_main_song_bg">
 

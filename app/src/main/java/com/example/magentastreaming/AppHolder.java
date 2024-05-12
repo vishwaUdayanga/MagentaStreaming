@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
@@ -16,9 +17,9 @@ import com.google.android.material.tabs.TabLayoutMediator;
 
 public class AppHolder extends AppCompatActivity {
 
-    ViewPagerFragmentAdapter viewPagerFragmentAdapter;
+    static ViewPagerFragmentAdapter viewPagerFragmentAdapter;
     TabLayout tabLayout;
-    ViewPager2 viewPager2;
+    static ViewPager2 viewPager2;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -32,6 +33,7 @@ public class AppHolder extends AppCompatActivity {
         viewPagerFragmentAdapter.addFragments(new HomeFragment(), "Home");
         viewPagerFragmentAdapter.addFragments(new GenreFragment(), "Genre");
         viewPagerFragmentAdapter.addFragments(new LikedFragment(), "Liked");
+        viewPagerFragmentAdapter.addFragments(new SearchFragment(), "Search");
 
         viewPager2.setAdapter(viewPagerFragmentAdapter);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> tab.setText(viewPagerFragmentAdapter.getTitles().get(position))).attach();
@@ -39,6 +41,7 @@ public class AppHolder extends AppCompatActivity {
         tabLayout.getTabAt(0).setIcon(R.drawable.home);
         tabLayout.getTabAt(1).setIcon(R.drawable.genre);
         tabLayout.getTabAt(2).setIcon(R.drawable.liked);
+        tabLayout.getTabAt(3).setIcon(R.drawable.search);
 
         tabLayout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.pink) , PorterDuff.Mode.SRC_IN);
 
