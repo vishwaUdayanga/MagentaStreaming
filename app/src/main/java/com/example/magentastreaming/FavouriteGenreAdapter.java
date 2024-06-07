@@ -1,8 +1,11 @@
 package com.example.magentastreaming;
 
+import static com.example.magentastreaming.AppHolder.fragmentManager;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -80,14 +85,21 @@ public class FavouriteGenreAdapter extends RecyclerView.Adapter<FavouriteGenreAd
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(genreContext, PlayerActivity.class);
-//                intent.putExtra("position", position);
-//                genreContext.startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle =new Bundle();
+                bundle.putString("genre", genreFiles.get(position).getGenreName());
+
+
+
+                Fragment fragment = new GenreListFragment();
+                fragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+
+            }
+        });
     }
 
     @Override

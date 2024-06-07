@@ -1,11 +1,13 @@
 package com.example.magentastreaming;
 
+import static com.example.magentastreaming.AppHolder.fragmentManager;
 import static java.security.AccessController.getContext;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +34,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
+
+
 
 public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHolder> {
     private Context genreContext;
@@ -85,14 +92,21 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(genreContext, PlayerActivity.class);
-//                intent.putExtra("position", position);
-//                genreContext.startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Bundle bundle =new Bundle();
+                bundle.putString("genre", genreFiles.get(position).getGenreName());
+
+
+
+                Fragment fragment = new GenreListFragment();
+                fragment.setArguments(bundle);
+                fragmentManager.beginTransaction().replace(R.id.frame_layout, fragment).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+
+            }
+        });
     }
 
     @Override

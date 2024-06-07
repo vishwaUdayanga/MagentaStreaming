@@ -25,32 +25,38 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>  {
+public class GenreListAdapter extends RecyclerView.Adapter<GenreListAdapter.GenreListViewHolder> {
+
     private Context songContext;
-    private ArrayList<MusicFiles> songFiles;
+    private ArrayList<MusicFiles> musicFiles;
 
     StorageReference storageReference;
 
-    SongAdapter(Context songContext, ArrayList<MusicFiles> songFiles) {
+    public void setFilteredList(ArrayList<MusicFiles> filteredList){
+        this.musicFiles = filteredList;
+        notifyDataSetChanged();
+    }
+
+    GenreListAdapter(Context songContext, ArrayList<MusicFiles> musicFiles) {
         this.songContext = songContext;
-        this.songFiles = songFiles;
+        this.musicFiles = musicFiles;
     }
 
     @NonNull
     @Override
-    public SongAdapter.SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public GenreListAdapter.GenreListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(songContext).inflate(R.layout.item_song, parent, false);
-        return new SongAdapter.SongViewHolder(view);
+        return new GenreListAdapter.GenreListViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SongAdapter.SongViewHolder holder, int position) {
-        holder.songTitle.setText(songFiles.get(position).getTitle());
-        holder.songDuration.setText(String.valueOf(songFiles.get(position).getDuration()));
-        holder.songArtist.setText(songFiles.get(position).getArtist());
+    public void onBindViewHolder(@NonNull GenreListAdapter.GenreListViewHolder holder, int position) {
+        holder.songTitle.setText(musicFiles.get(position).getTitle());
+        holder.songDuration.setText(String.valueOf(musicFiles.get(position).getDuration()));
+        holder.songArtist.setText(musicFiles.get(position).getArtist());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-        storageReference = FirebaseStorage.getInstance().getReference("genre_arts/"+songFiles.get(position).getAlbumArt()+".jpg");
+        storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
 
         try {
             File localFile = File.createTempFile("tempFile", ".jpg");
@@ -94,10 +100,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     @Override
     public int getItemCount() {
-        return songFiles.size();
+        return musicFiles.size();
     }
 
-    public class SongViewHolder extends RecyclerView.ViewHolder {
+    public class GenreListViewHolder extends RecyclerView.ViewHolder {
 
         TextView songTitle;
 
@@ -106,7 +112,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         ImageView songArt;
 
-        public SongViewHolder(@NonNull View itemView) {
+        public GenreListViewHolder(@NonNull View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_name);
             songArt = itemView.findViewById(R.id.song_img);

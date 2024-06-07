@@ -1,17 +1,22 @@
 package com.example.magentastreaming;
 
+import static com.example.magentastreaming.HomeFragment.musicFiles;
+
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,8 +31,19 @@ public class LikedFragment extends Fragment {
     SongAdapter songAdapter;
 
     DatabaseReference databaseReference;
+    DatabaseReference databaseReference2;
 
-    static ArrayList<Song> songs;
+
+    User appUser;
+
+    static ArrayList<MusicFiles> songs;
+
+    FirebaseAuth auth;
+
+    FirebaseUser user;
+
+    ArrayList<Liked> liked;
+
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -37,20 +53,64 @@ public class LikedFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_liked, container, false);
         recyclerView = view.findViewById(R.id.liked_songs_recyclerView);
 
+        //getting user
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+        liked = new ArrayList<Liked>();
+
+        appUser = new User(user.getEmail(),user.getUid());
+
         songs = new ArrayList<>();
 
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("genres");
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("liked");
+        databaseReference2 = FirebaseDatabase.getInstance().getReference().child("songs");
+
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    songs.add(new Song(dataSnapshot.child("genre_title").getValue().toString(), dataSnapshot.child("genre_art").getValue().toString(),"",""));
+
+                    if(dataSnapshot.child("user").getValue().toString().contains(appUser.getUserID()))
+                    {
+                        liked.add(new Liked(dataSnapshot.child("user").getValue().toString(),dataSnapshot.child("song").getValue().toString()));
+
+                    }
+                    else {
+
+                    }
+
+                }
+
+                songAdapter.notifyDataSetChanged();
+            }
+
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("Error", "Error");
+            }
+        });
+
+        databaseReference2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (int i=0; i< liked.size(); i++) {
+                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                        if(dataSnapshot.getKey().toString().contains(liked.get(i).getSongID()))
+                        {
+                            songs.add(new MusicFiles(dataSnapshot.child("title").getValue().toString(), dataSnapshot.child("album_art").getValue().toString(), dataSnapshot.child("album_name").getValue().toString(), Double.parseDouble(dataSnapshot.child("duration").getValue().toString()), dataSnapshot.child("artist").getValue().toString(), dataSnapshot.child("clip_source").getValue().toString(), dataSnapshot.child("genre").getValue().toString()));
+                        }
+                        else {
+
+                        }
+                    }
+
                 }
                 songAdapter.notifyDataSetChanged();
-
-
             }
+
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

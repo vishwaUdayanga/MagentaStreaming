@@ -6,16 +6,18 @@ public class MusicFiles {
     private String albumName;
     private double duration;
     private String artist;
+    private String genre;
 
     private String clip_source;
 
-    public MusicFiles(String title, String albumArt, String albumName, double duration, String artist, String clip_source) {
+    public MusicFiles(String title, String albumArt, String albumName, double duration, String artist, String clip_source, String genre) {
         this.title = title;
         this.albumArt = albumArt;
         this.albumName = albumName;
         this.duration = duration;
         this.artist = artist;
         this.clip_source = clip_source;
+        this.genre = genre;
     }
 
     public String getClip_source() {
@@ -64,5 +66,13 @@ public class MusicFiles {
 
     public void setDuration(double duration) {
         this.duration = duration;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 }
