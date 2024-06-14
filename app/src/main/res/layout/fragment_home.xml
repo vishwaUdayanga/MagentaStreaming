@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
-    android:padding="10dp"
-    tools:context=".HomeFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/black">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:padding="10dp"
+        tools:context=".Fragments.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -36,93 +43,94 @@
 
 <!--    </RelativeLayout>-->
 
-    <RelativeLayout
-        android:id="@+id/main_song"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        <RelativeLayout
+            android:id="@+id/main_song"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
 
-        android:layout_marginTop="30dp"
-        android:background="@drawable/home_main_song_bg">
+            android:layout_marginTop="30dp"
+            android:background="@drawable/home_main_song_bg">
+
+            <TextView
+                android:id="@+id/main_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Trending new hits"
+                android:textColor="@color/gray"
+                android:textSize="13dp" />
+
+            <TextView
+                android:id="@+id/main_song_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_title"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="Like That"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/main_song_artist"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/main_song_name"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="0dp"
+                android:text="Babymonster"
+                android:textColor="@color/gray"
+                android:textSize="13dp" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/main_song_button"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/main_song_artist"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/button_bg"
+                android:backgroundTintMode="add"
+                android:text="Listen Now"
+                android:textStyle="bold"
+                android:textColor="@color/white"/>
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:scaleType="center"
+                android:src="@drawable/sample_bg" />
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/main_title"
+            android:id="@+id/main_topic_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/main_song"
             android:layout_marginTop="20dp"
-            android:text="Trending new hits"
-            android:textColor="@color/gray"
-            android:textSize="13dp" />
-
-        <TextView
-            android:id="@+id/main_song_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/main_title"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:text="Like That"
+            android:text="Music to try"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:textStyle="bold" />
-
         <TextView
-            android:id="@+id/main_song_artist"
+            android:id="@+id/sub_topic_home"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/main_song_name"
-            android:layout_marginLeft="20dp"
+            android:layout_below="@+id/main_topic_home"
             android:layout_marginTop="0dp"
             android:text="Babymonster"
             android:textColor="@color/gray"
             android:textSize="13dp" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/main_song_button"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/main_song_artist"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_bg"
-            android:backgroundTintMode="add"
-            android:text="Listen Now"
-            android:textStyle="bold"
-            android:textColor="@color/white"/>
-
-        <ImageView
-            android:layout_width="120dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/home_recyclerView"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:scaleType="center"
-            android:src="@drawable/sample_bg" />
+            android:layout_below="@+id/sub_topic_home"
+            android:layout_marginTop="20dp"
+            android:background="@color/black" />
     </RelativeLayout>
-
-    <TextView
-        android:id="@+id/main_topic_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/main_song"
-        android:layout_marginTop="20dp"
-        android:text="Music to try"
-        android:textColor="@color/white"
-        android:textSize="20dp"
-        android:textStyle="bold" />
-    <TextView
-        android:id="@+id/sub_topic_home"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/main_topic_home"
-        android:layout_marginTop="0dp"
-        android:text="Babymonster"
-        android:textColor="@color/gray"
-        android:textSize="13dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/sub_topic_home"
-        android:layout_marginTop="20dp"
-        android:background="@color/black" />
-</RelativeLayout>
+</ScrollView>

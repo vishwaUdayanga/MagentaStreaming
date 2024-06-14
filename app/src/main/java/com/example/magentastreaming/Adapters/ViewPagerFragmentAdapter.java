@@ -1,4 +1,4 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Adapters;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;

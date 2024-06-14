@@ -1,14 +1,11 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Adapters;
 
-import static com.example.magentastreaming.AppHolder.fragmentManager;
-import static java.security.AccessController.getContext;
+import static com.example.magentastreaming.Activities.AppHolder.fragmentManager;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +14,16 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.magentastreaming.Fragments.GenreListFragment;
+import com.example.magentastreaming.Models.Genre;
+import com.example.magentastreaming.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -43,7 +41,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
 
     StorageReference storageReference;
 
-    GenreAdapter(Context genreContext, ArrayList<Genre> genreFiles) {
+    public GenreAdapter(Context genreContext, ArrayList<Genre> genreFiles) {
         this.genreContext = genreContext;
         this.genreFiles = genreFiles;
     }

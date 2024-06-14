@@ -1,4 +1,4 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Fragments;
 
 import android.os.Bundle;
 
@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.magentastreaming.Adapters.SearchAdapter;
+import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,7 +24,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class SearchFragment extends Fragment {
 

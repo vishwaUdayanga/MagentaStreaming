@@ -1,7 +1,6 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Fragments;
 
-//import static com.example.magentastreaming.AppHolder.viewPager2;
-import static com.example.magentastreaming.AppHolder.viewPagerFragmentAdapter;
+//import static com.example.magentastreaming.Activities.AppHolder.viewPager2;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -9,16 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.tabs.TabLayoutMediator;
+import com.example.magentastreaming.Adapters.MusicAdapter;
+import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,7 +32,7 @@ public class HomeFragment extends Fragment {
 
     DatabaseReference databaseReference;
 
-    static ArrayList<MusicFiles> musicFiles;
+    public static ArrayList<MusicFiles> musicFiles;
 
     @SuppressLint("MissingInflatedId")
     @Override

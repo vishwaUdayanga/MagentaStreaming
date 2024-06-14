@@ -1,7 +1,6 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -17,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -25,39 +26,33 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
+public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>  {
     private Context songContext;
-    private ArrayList<MusicFiles> musicFiles;
+    private ArrayList<MusicFiles> songFiles;
 
     StorageReference storageReference;
 
-    public void setFilteredList(ArrayList<MusicFiles> filteredList){
-        this.musicFiles = filteredList;
-        notifyDataSetChanged();
-    }
-
-    SearchAdapter(Context songContext, ArrayList<MusicFiles> musicFiles) {
+    public SongAdapter(Context songContext, ArrayList<MusicFiles> songFiles) {
         this.songContext = songContext;
-        this.musicFiles = musicFiles;
+        this.songFiles = songFiles;
     }
 
     @NonNull
     @Override
-    public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SongAdapter.SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(songContext).inflate(R.layout.item_song, parent, false);
-        return new SearchAdapter.SearchViewHolder(view);
+        return new SongAdapter.SongViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SearchAdapter.SearchViewHolder holder, int position) {
-        holder.songTitle.setText(musicFiles.get(position).getTitle());
-        holder.songDuration.setText(String.valueOf(musicFiles.get(position).getDuration()));
-        holder.songArtist.setText(musicFiles.get(position).getArtist());
+    public void onBindViewHolder(@NonNull SongAdapter.SongViewHolder holder, int position) {
+        holder.songTitle.setText(songFiles.get(position).getTitle());
+        holder.songDuration.setText(String.valueOf(songFiles.get(position).getDuration()));
+        holder.songArtist.setText(songFiles.get(position).getArtist());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-        storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
+        storageReference = FirebaseStorage.getInstance().getReference("genre_arts/"+songFiles.get(position).getAlbumArt()+".jpg");
 
         try {
             File localFile = File.createTempFile("tempFile", ".jpg");
@@ -101,10 +96,10 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
     @Override
     public int getItemCount() {
-        return musicFiles.size();
+        return songFiles.size();
     }
 
-    public class SearchViewHolder extends RecyclerView.ViewHolder {
+    public class SongViewHolder extends RecyclerView.ViewHolder {
 
         TextView songTitle;
 
@@ -113,7 +108,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
 
         ImageView songArt;
 
-        public SearchViewHolder(@NonNull View itemView) {
+        public SongViewHolder(@NonNull View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_name);
             songArt = itemView.findViewById(R.id.song_img);

@@ -1,4 +1,4 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Models;
 
 public class Genre {
     private String genreName;

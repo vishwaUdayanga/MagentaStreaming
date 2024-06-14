@@ -1,4 +1,4 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -25,32 +27,37 @@ import com.google.firebase.storage.StorageReference;
 import java.io.File;
 import java.util.ArrayList;
 
-public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>  {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
     private Context songContext;
-    private ArrayList<MusicFiles> songFiles;
+    private ArrayList<MusicFiles> musicFiles;
 
     StorageReference storageReference;
 
-    SongAdapter(Context songContext, ArrayList<MusicFiles> songFiles) {
+    public void setFilteredList(ArrayList<MusicFiles> filteredList){
+        this.musicFiles = filteredList;
+        notifyDataSetChanged();
+    }
+
+    public SearchAdapter(Context songContext, ArrayList<MusicFiles> musicFiles) {
         this.songContext = songContext;
-        this.songFiles = songFiles;
+        this.musicFiles = musicFiles;
     }
 
     @NonNull
     @Override
-    public SongAdapter.SongViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SearchAdapter.SearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(songContext).inflate(R.layout.item_song, parent, false);
-        return new SongAdapter.SongViewHolder(view);
+        return new SearchAdapter.SearchViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull SongAdapter.SongViewHolder holder, int position) {
-        holder.songTitle.setText(songFiles.get(position).getTitle());
-        holder.songDuration.setText(String.valueOf(songFiles.get(position).getDuration()));
-        holder.songArtist.setText(songFiles.get(position).getArtist());
+    public void onBindViewHolder(@NonNull SearchAdapter.SearchViewHolder holder, int position) {
+        holder.songTitle.setText(musicFiles.get(position).getTitle());
+        holder.songDuration.setText(String.valueOf(musicFiles.get(position).getDuration()));
+        holder.songArtist.setText(musicFiles.get(position).getArtist());
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-        storageReference = FirebaseStorage.getInstance().getReference("genre_arts/"+songFiles.get(position).getAlbumArt()+".jpg");
+        storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
 
         try {
             File localFile = File.createTempFile("tempFile", ".jpg");
@@ -94,10 +101,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     @Override
     public int getItemCount() {
-        return songFiles.size();
+        return musicFiles.size();
     }
 
-    public class SongViewHolder extends RecyclerView.ViewHolder {
+    public class SearchViewHolder extends RecyclerView.ViewHolder {
 
         TextView songTitle;
 
@@ -106,7 +113,7 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
         ImageView songArt;
 
-        public SongViewHolder(@NonNull View itemView) {
+        public SearchViewHolder(@NonNull View itemView) {
             super(itemView);
             songTitle = itemView.findViewById(R.id.song_name);
             songArt = itemView.findViewById(R.id.song_img);

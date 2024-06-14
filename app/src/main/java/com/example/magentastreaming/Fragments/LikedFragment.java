@@ -1,6 +1,4 @@
-package com.example.magentastreaming;
-
-import static com.example.magentastreaming.HomeFragment.musicFiles;
+package com.example.magentastreaming.Fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -8,13 +6,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.magentastreaming.Adapters.SongAdapter;
+import com.example.magentastreaming.Models.Liked;
+import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.Models.User;
+import com.example.magentastreaming.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;

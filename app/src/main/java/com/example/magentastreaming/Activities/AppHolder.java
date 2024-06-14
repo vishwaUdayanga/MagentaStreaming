@@ -1,22 +1,22 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Activities;
 
 import android.annotation.SuppressLint;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.magentastreaming.Fragments.GenreFragment;
+import com.example.magentastreaming.Fragments.HomeFragment;
+import com.example.magentastreaming.Fragments.LikedFragment;
+import com.example.magentastreaming.R;
+import com.example.magentastreaming.Fragments.SearchFragment;
+import com.example.magentastreaming.Adapters.ViewPagerFragmentAdapter;
 import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayoutMediator;
 
 public class AppHolder extends AppCompatActivity {
 
@@ -26,7 +26,7 @@ public class AppHolder extends AppCompatActivity {
 
     FrameLayout frameLayout;
 
-    static FragmentManager fragmentManager;
+    public static FragmentManager fragmentManager;
 
     @SuppressLint("MissingInflatedId")
     @Override

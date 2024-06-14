@@ -1,4 +1,4 @@
-package com.example.magentastreaming;
+package com.example.magentastreaming.Adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -16,6 +16,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FileDownloadTask;
@@ -37,7 +39,7 @@ public class GenreListAdapter extends RecyclerView.Adapter<GenreListAdapter.Genr
         notifyDataSetChanged();
     }
 
-    GenreListAdapter(Context songContext, ArrayList<MusicFiles> musicFiles) {
+    public GenreListAdapter(Context songContext, ArrayList<MusicFiles> musicFiles) {
         this.songContext = songContext;
         this.musicFiles = musicFiles;
     }
