@@ -93,7 +93,7 @@ public class FavouriteGenreAdapter extends RecyclerView.Adapter<FavouriteGenreAd
             public void onClick(View v) {
 
                 Bundle bundle =new Bundle();
-                bundle.putString("genre", genreFiles.get(position).getGenreName());
+                bundle.putInt("genre", genreFiles.get(position).getID());
 
 
 

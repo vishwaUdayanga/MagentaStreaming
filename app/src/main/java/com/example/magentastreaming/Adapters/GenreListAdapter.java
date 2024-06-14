@@ -90,14 +90,6 @@ public class GenreListAdapter extends RecyclerView.Adapter<GenreListAdapter.Genr
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(genreContext, PlayerActivity.class);
-//                intent.putExtra("position", position);
-//                genreContext.startActivity(intent);
-//            }
-//        });
     }
 
     @Override

@@ -38,7 +38,7 @@ public class GenreListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_genre_list, container, false);
-        String genre = getArguments().getString("genre");
+        int genre = getArguments().getInt("genre");
 
 
         recyclerView = view.findViewById(R.id.genrelist_recyclerView);
@@ -50,7 +50,7 @@ public class GenreListFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    if (dataSnapshot.child("genre").getValue().toString().toLowerCase().contains(genre.toLowerCase())) {
+                    if (dataSnapshot.child("genre").toString().contains(String.valueOf(genre))) {
                         musicFiles.add(new MusicFiles(dataSnapshot.child("title").getValue().toString(), dataSnapshot.child("album_art").getValue().toString(), dataSnapshot.child("album_name").getValue().toString(), Double.parseDouble(dataSnapshot.child("duration").getValue().toString()), dataSnapshot.child("artist").getValue().toString(), dataSnapshot.child("clip_source").getValue().toString(), dataSnapshot.child("genre").getValue().toString()));
                     }
                 }
