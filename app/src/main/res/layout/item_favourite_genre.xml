@@ -26,8 +26,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/pink"
-        android:src="@drawable/sample_bg"/>
+        android:backgroundTint="@color/pink" />
 
 
 </RelativeLayout>

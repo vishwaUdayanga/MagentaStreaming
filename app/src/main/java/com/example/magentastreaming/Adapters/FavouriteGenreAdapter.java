@@ -94,6 +94,7 @@ public class FavouriteGenreAdapter extends RecyclerView.Adapter<FavouriteGenreAd
 
                 Bundle bundle =new Bundle();
                 bundle.putInt("genre", genreFiles.get(position).getID());
+                bundle.putString("genre_name",genreFiles.get(position).getGenreName());
 
 
 

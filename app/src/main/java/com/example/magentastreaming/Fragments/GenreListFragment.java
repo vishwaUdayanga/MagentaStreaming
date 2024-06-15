@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.magentastreaming.Adapters.GenreListAdapter;
 import com.example.magentastreaming.Models.MusicFiles;
@@ -39,7 +40,11 @@ public class GenreListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_genre_list, container, false);
         int genre = getArguments().getInt("genre");
+        String genre_name = getArguments().getString("genre_name");
 
+
+        TextView tv = view.findViewById(R.id.genre_title);
+        tv.setText(genre_name);
 
         recyclerView = view.findViewById(R.id.genrelist_recyclerView);
         recyclerView.setHasFixedSize(true);

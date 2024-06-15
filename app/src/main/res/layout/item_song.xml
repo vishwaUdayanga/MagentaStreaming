@@ -14,7 +14,6 @@
         android:layout_width="45dp"
         android:layout_height="match_parent"
         android:id="@+id/song_img"
-        android:src="@drawable/sample_bg"
         />
     <TextView
         android:id="@+id/song_name"

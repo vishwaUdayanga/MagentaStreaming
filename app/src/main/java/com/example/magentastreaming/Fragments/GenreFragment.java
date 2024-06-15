@@ -52,6 +52,7 @@ public class GenreFragment extends Fragment {
     DatabaseReference databaseReference;
 
     static ArrayList<Genre> genres;
+    static ArrayList<Genre> favGenre;
 
     TextView textView;
 
@@ -65,60 +66,12 @@ public class GenreFragment extends Fragment {
         recyclerView1 = view.findViewById(R.id.regular_genre_recycler_view);
         recyclerView2 = view.findViewById(R.id.favourite_genre_recycler_view);
         genres = new ArrayList<Genre>();
+        favGenre = new ArrayList<Genre>(3);
         //initializing queue
         queue = Volley.newRequestQueue(getContext());
         loadData();
-        JSONObject jsonObject;
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            for (int i = 0; i < response.length(); i++) {
-                                String genrename = response.getJSONObject(i).getString("genre");
-                                genres.add(new Genre(genrename,null,i));
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
-                    }
-                }
-        );
-        queue.add(jsonArrayRequest);
 
-        //Getting genres
-
-
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("genres");
-
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    genres.add(new Genre(dataSnapshot.child("genre_title").getValue().toString(), dataSnapshot.child("genre_art").getValue().toString(),1));
-                }
-                loadData();
-                genreAdapter.notifyDataSetChanged();
-                favouriteGenreAdapter.notifyDataSetChanged();
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("Error", "Error");
-            }
-        });
-
-
-        favouriteGenreAdapter = new FavouriteGenreAdapter(getContext(),genres);
-
+        favouriteGenreAdapter = new FavouriteGenreAdapter(getContext(),favGenre);
         genreAdapter = new GenreAdapter(getContext(), genres);
         recyclerView2.setAdapter(favouriteGenreAdapter);
         recyclerView2.setLayoutManager(new GridLayoutManager(getContext(), 1, RecyclerView.HORIZONTAL, false));
@@ -140,8 +93,14 @@ public class GenreFragment extends Fragment {
                             for (int i = 0; i < response.length(); i++) {
                                 System.out.println();
                                 String genrename = response.getJSONObject(i).getString("genre");
-                                genres.add(new Genre(genrename,null,1));
+                                if(i<3)
+                                {
+                                    favGenre.add(new Genre(genrename,String.valueOf(Integer.parseInt(response.getJSONObject(i).getString("id"))),Integer.parseInt(response.getJSONObject(i).getString("id"))));
+                                }
+                                genres.add(new Genre(genrename,String.valueOf(Integer.parseInt(response.getJSONObject(i).getString("id"))),Integer.parseInt(response.getJSONObject(i).getString("id"))));
                             }
+                            genreAdapter.notifyDataSetChanged();
+                            favouriteGenreAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

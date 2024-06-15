@@ -96,6 +96,7 @@ public class GenreAdapter extends RecyclerView.Adapter<GenreAdapter.GenreViewHol
 
                 Bundle bundle =new Bundle();
                 bundle.putInt("genre", genreFiles.get(position).getID());
+                bundle.putString("genre_name",genreFiles.get(position).getGenreName());
 
 
 
