@@ -55,6 +55,8 @@ public class AppHolder extends AppCompatActivity {
 
     ImageView mainProfileImg;
 
+    FrameLayout minimizedPlayer;
+
 
     StorageReference storageReference;
 
@@ -73,6 +75,7 @@ public class AppHolder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_holder);
 
+        minimizedPlayer = findViewById(R.id.minimized_player);
 
         mainProfileImg = findViewById(R.id.main_profile_img);
         Glide.with(getApplicationContext()).asBitmap()

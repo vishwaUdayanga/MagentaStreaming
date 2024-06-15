@@ -118,7 +118,7 @@
                 app:elevation="1dp"
                 app:borderWidth="0dp"
                 app:pressedTranslationZ="1dp"
-                android:backgroundTint="@color/white"
+                android:backgroundTint="@color/pink"
                 android:src="@drawable/pause_solid"
                 android:id="@+id/play_pause"
                 android:layout_toEndOf="@+id/go_to_previous"

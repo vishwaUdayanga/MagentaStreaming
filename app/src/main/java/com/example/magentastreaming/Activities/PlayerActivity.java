@@ -5,6 +5,7 @@ import static com.example.magentastreaming.Activities.ApplicationClass.ACTION_PL
 import static com.example.magentastreaming.Activities.ApplicationClass.ACTION_PREV;
 import static com.example.magentastreaming.Activities.ApplicationClass.CHANNEL_ID_2;
 import static com.example.magentastreaming.Fragments.HomeFragment.musicFiles;
+import static com.example.magentastreaming.Fragments.MinimizedPlayer.playButton;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -59,7 +60,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     TextView title, artist, durationPlayed, durationTotal;
     ImageView coverArt, nextButton, prevButton, backButton;
 
-    FloatingActionButton playPauseButton;
+    public static FloatingActionButton playPauseButton;
     SeekBar seekBar;
     public static int position;
     static ArrayList<MusicFiles> listOfSongs = new ArrayList<>();
@@ -80,6 +81,8 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
 
     public static final String ALBUM_ART = "STORED_ART";
     public static String SONG_NAME = "Song name";
+
+    public static String ARTIST_NAME = "Artist name";
 
 
     public static MediaSessionCompat mediaSession;
@@ -173,7 +176,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
         Intent intent = new Intent(this, MusicService.class);
         bindService(intent, this, BIND_AUTO_CREATE);
 
-        mediaSession = new MediaSessionCompat(this, "AudioPlayer");
+//        mediaSession = new MediaSessionCompat(this, "AudioPlayer");
         showNotification(R.drawable.pause_solid);
 
     }
@@ -395,6 +398,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
         editor.putString(ALBUM_ART, listOfSongs.get(position).getAlbumArt());
         editor.apply();
         SONG_NAME = listOfSongs.get(position).getTitle();
+        ARTIST_NAME = listOfSongs.get(position).getArtist();
         editor.apply();
         seekBar.setMax(mediaPlayer.getDuration() /  1000);
         durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
@@ -407,9 +411,9 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                 .load(R.drawable.sample_bg)
                 .apply(requestOptions)
                 .into(coverArt);
-        title.setText(listOfSongs.get(position).getTitle());
-        artist.setText(listOfSongs.get(position).getArtist());
-        storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+listOfSongs.get(position).getAlbumArt()+".jpg");
+        title.setText(musicFiles.get(position).getTitle());
+        artist.setText(musicFiles.get(position).getArtist());
+        storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
 
         try {
             File localFile = File.createTempFile("tempFile", ".jpg");
@@ -526,6 +530,8 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
             }
             seekBar.setMax(mediaPlayer.getDuration() /  1000);
             durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
+            SONG_NAME = listOfSongs.get(position).getTitle();
+            ARTIST_NAME = listOfSongs.get(position).getArtist();
 
             if (mediaPlayer.isPlaying()) {
                 showNotification(R.drawable.pause_solid);
@@ -564,6 +570,8 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
             }
             seekBar.setMax(mediaPlayer.getDuration() /  1000);
             durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
+            SONG_NAME = listOfSongs.get(position).getTitle();
+            ARTIST_NAME = listOfSongs.get(position).getArtist();
 
             if (mediaPlayer.isPlaying()) {
                 showNotification(R.drawable.pause_solid);
@@ -580,6 +588,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     public void playClicked() {
         if (mediaPlayer.isPlaying()) {
             playPauseButton.setImageResource(R.drawable.play_solid);
+            playButton.setImageResource(R.drawable.play_solid);
             mediaPlayer.pause();
             showNotification(R.drawable.play_solid);
             seekBar.setMax(mediaPlayer.getDuration() / 1000);
@@ -595,6 +604,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
             });
         } else {
             playPauseButton.setImageResource(R.drawable.pause_solid);
+            playButton.setImageResource(R.drawable.pause);
             mediaPlayer.start();
             showNotification(R.drawable.pause_solid);
             seekBar.setMax(mediaPlayer.getDuration() / 1000);

@@ -11,6 +11,12 @@ import static com.example.magentastreaming.Activities.PlayerActivity.mediaSessio
 import static com.example.magentastreaming.Activities.PlayerActivity.position;
 import static com.example.magentastreaming.Activities.PlayerActivity.uri;
 import static com.example.magentastreaming.Fragments.HomeFragment.musicFiles;
+import static com.example.magentastreaming.Fragments.MinimizedPlayer.albumArt;
+import static com.example.magentastreaming.Fragments.MinimizedPlayer.artist;
+import static com.example.magentastreaming.Fragments.MinimizedPlayer.playButton;
+import static com.example.magentastreaming.Fragments.MinimizedPlayer.songName;
+
+import static java.security.AccessController.getContext;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -118,12 +124,14 @@ public class MusicService extends Service {
         } else {
             position--;
         }
+        artist.setText(musicFiles.get(position).getArtist());
+        songName.setText(musicFiles.get(position).getTitle());
 
         getImage();
 
         try {
-            if (listOfSongs != null) {
-                uri = Uri.parse(listOfSongs.get(position).getClip_source());
+            if (musicFiles != null) {
+                uri = Uri.parse(musicFiles.get(position).getClip_source());
             }
 
             if (mediaPlayer != null) {
@@ -138,8 +146,10 @@ public class MusicService extends Service {
 
             if (mediaPlayer.isPlaying()) {
                 showNotification(R.drawable.pause_solid);
+                playButton.setImageResource(R.drawable.pause);
             } else {
                 showNotification(R.drawable.play_solid);
+                playButton.setImageResource(R.drawable.play_solid);
             }
 
         } catch (Exception e) {
@@ -149,11 +159,13 @@ public class MusicService extends Service {
 
     private void nextClickedBg() {
         position = (position+1)%musicFiles.size();
+        artist.setText(musicFiles.get(position).getArtist());
+        songName.setText(musicFiles.get(position).getTitle());
         getImage();
 
         try {
-            if (listOfSongs != null) {
-                uri = Uri.parse(listOfSongs.get(position).getClip_source());
+            if (musicFiles != null) {
+                uri = Uri.parse(musicFiles.get(position).getClip_source());
             }
 
             if (mediaPlayer != null) {
@@ -168,8 +180,10 @@ public class MusicService extends Service {
 
             if (mediaPlayer.isPlaying()) {
                 showNotification(R.drawable.pause_solid);
+                playButton.setImageResource(R.drawable.pause);
             } else {
                 showNotification(R.drawable.play_solid);
+                playButton.setImageResource(R.drawable.play_solid);
             }
 
         } catch (Exception e) {
@@ -180,10 +194,12 @@ public class MusicService extends Service {
     private void playClickedBg() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
+            playButton.setImageResource(R.drawable.play_solid);
             showNotification(R.drawable.play_solid);
         } else {
             mediaPlayer.start();
             showNotification(R.drawable.pause_solid);
+            playButton.setImageResource(R.drawable.pause);
 
         }
     }
@@ -228,12 +244,18 @@ public class MusicService extends Service {
 
     public void getImage() {
         try {
-            storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+listOfSongs.get(position).getAlbumArt()+".jpg");
+            storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
             File localFile = File.createTempFile("tempFile", ".jpg");
             storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                     bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+                    Glide.with(getApplicationContext()).asBitmap()
+                            .load(bitmap)
+                            .apply(requestOptions)
+                            .into(albumArt);
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
