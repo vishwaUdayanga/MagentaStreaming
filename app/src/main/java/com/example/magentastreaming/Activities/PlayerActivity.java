@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
@@ -62,7 +63,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     SeekBar seekBar;
     public static int position;
     static ArrayList<MusicFiles> listOfSongs = new ArrayList<>();
-    static MediaPlayer mediaPlayer;
+    public static MediaPlayer mediaPlayer;
     public static Uri uri;
 
     private Handler handler = new Handler();
@@ -71,6 +72,14 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     private Thread playThread, prevThread, nextThread;
 
     public static Bitmap bitmap;
+
+    public static final String MUSIC_LAST_PLAYED = "LAST_PLAYED";
+    public static final String MUSIC_FILE = "STORED_MUSIC";
+    public static final String ARTIST = "STORED_ARTIST";
+    public static final String SONG = "STORED_SONG";
+
+    public static final String ALBUM_ART = "STORED_ART";
+    public static String SONG_NAME = "Song name";
 
 
     public static MediaSessionCompat mediaSession;
@@ -379,6 +388,14 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
             mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
             mediaPlayer.start();
         }
+        SharedPreferences.Editor editor = getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE).edit();
+        editor.putString(MUSIC_FILE, uri.toString());
+        editor.putString(ARTIST, listOfSongs.get(position).getArtist());
+        editor.putString(SONG, listOfSongs.get(position).getTitle());
+        editor.putString(ALBUM_ART, listOfSongs.get(position).getAlbumArt());
+        editor.apply();
+        SONG_NAME = listOfSongs.get(position).getTitle();
+        editor.apply();
         seekBar.setMax(mediaPlayer.getDuration() /  1000);
         durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
     }

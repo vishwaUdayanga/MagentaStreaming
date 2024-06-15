@@ -2,13 +2,16 @@ package com.example.magentastreaming.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,6 +39,8 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import static com.example.magentastreaming.Activities.PlayerActivity.mediaPlayer;
+
 import java.io.File;
 
 public class AppHolder extends AppCompatActivity {
@@ -57,11 +62,17 @@ public class AppHolder extends AppCompatActivity {
     FirebaseUser user;
     User appUser;
 
+    public static boolean SHOW_MINI_PLAYER = false;
+
+    public static final String MUSIC_LAST_PLAYED = "LAST_PLAYED";
+    public static final String MUSIC_FILE = "STORED_MUSIC";
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_holder);
+
 
         mainProfileImg = findViewById(R.id.main_profile_img);
         Glide.with(getApplicationContext()).asBitmap()
@@ -180,7 +191,17 @@ public class AppHolder extends AppCompatActivity {
                     }
                 }
         );
+    }
 
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences preferences = getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
+        String value = preferences.getString(MUSIC_FILE, null);
+        if (value != null) {
+            SHOW_MINI_PLAYER = true;
+        } else {
+            SHOW_MINI_PLAYER = false;
+        }
     }
 }

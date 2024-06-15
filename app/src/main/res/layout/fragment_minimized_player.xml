@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".Fragments.MinimizedPlayer">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:background="@color/black"
+        android:id="@+id/current_player">
+
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/sample_bg"
+            android:id="@+id/songImg"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Song1"
+            android:textSize="12dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/songImg"
+            android:textColor="@color/white"
+            android:id="@+id/song_name_bottom"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Artist1"
+            android:textSize="6dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_below="@+id/song_name_bottom"
+            android:layout_toEndOf="@+id/songImg"
+            android:textColor="@color/white"
+            android:id="@+id/artist_bottom"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:src="@drawable/backward_step_solid"
+                android:id="@+id/bottom_prev"
+                android:layout_marginRight="15dp"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:src="@drawable/play_solid"
+                android:id="@+id/bottom_play"
+                android:layout_toEndOf="@+id/bottom_prev"/>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:src="@drawable/next_music"
+                android:id="@+id/bottom_next"
+                android:layout_marginLeft="15dp"
+                android:layout_toEndOf="@+id/bottom_play"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</FrameLayout>
