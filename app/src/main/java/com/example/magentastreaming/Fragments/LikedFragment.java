@@ -78,9 +78,6 @@ public class LikedFragment extends Fragment {
                         liked.add(new Liked(dataSnapshot.child("user").getValue().toString(),dataSnapshot.child("song").getValue().toString()));
 
                     }
-                    else {
-
-                    }
 
                 }
 
