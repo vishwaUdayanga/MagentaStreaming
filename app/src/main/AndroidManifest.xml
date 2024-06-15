@@ -17,6 +17,9 @@
         android:theme="@style/Theme.MagentaStreaming"
         tools:targetApi="31">
         <activity
+            android:name=".Activities.EditProfile"
+            android:exported="false" />
+        <activity
             android:name=".Activities.Login"
             android:exported="false" />
         <activity
@@ -39,7 +42,7 @@
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <service
             android:name=".Activities.MusicService"

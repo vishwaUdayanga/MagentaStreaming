@@ -1,22 +1,42 @@
 package com.example.magentastreaming.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.magentastreaming.Fragments.GenreFragment;
 import com.example.magentastreaming.Fragments.HomeFragment;
 import com.example.magentastreaming.Fragments.LikedFragment;
+import com.example.magentastreaming.Models.User;
 import com.example.magentastreaming.R;
 import com.example.magentastreaming.Fragments.SearchFragment;
 import com.example.magentastreaming.Adapters.ViewPagerFragmentAdapter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 public class AppHolder extends AppCompatActivity {
 
@@ -28,11 +48,74 @@ public class AppHolder extends AppCompatActivity {
 
     public static FragmentManager fragmentManager;
 
+    ImageView mainProfileImg;
+
+
+    StorageReference storageReference;
+
+    FirebaseAuth auth;
+    FirebaseUser user;
+    User appUser;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_app_holder);
+
+        mainProfileImg = findViewById(R.id.main_profile_img);
+        Glide.with(getApplicationContext()).asBitmap()
+                .load(R.drawable.sample_user)
+                .apply(RequestOptions.circleCropTransform())
+                .into(mainProfileImg);
+        //getting user
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        appUser = new User(user.getEmail(),user.getUid());
+
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+        storageReference = FirebaseStorage.getInstance().getReference("profile_pic/"+appUser.getUserID());
+
+        try {
+            File localFile = File.createTempFile("tempFile", ".jpeg");
+            storageReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
+                    if (bitmap!= null) {
+                        Glide.with(getApplicationContext()).asBitmap()
+                                .load(bitmap)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(mainProfileImg);
+                    }
+                    else {
+                        Glide.with(getApplicationContext())
+                                .load(R.drawable.sample_user)
+                                .apply(RequestOptions.circleCropTransform())
+                                .into(mainProfileImg);
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    e.printStackTrace();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mainProfileImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EditProfile.class);
+                startActivity(intent);
+            }
+        });
 
         frameLayout = findViewById(R.id.frame_layout);
 //        viewPager2 = findViewById(R.id.view_pager);
