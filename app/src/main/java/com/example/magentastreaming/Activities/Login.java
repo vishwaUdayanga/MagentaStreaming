@@ -2,6 +2,7 @@ package com.example.magentastreaming.Activities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class Login extends AppCompatActivity {
 
@@ -27,6 +29,7 @@ public class Login extends AppCompatActivity {
     Button buttonLogin;
     FirebaseAuth mAuth;
     Button textView;
+    public static final String SHARED_PREFS = "sharedPrefs";
 
 //    @SuppressLint("MissingInflatedId")
 //    @Override
@@ -53,6 +56,9 @@ public class Login extends AppCompatActivity {
         editTextPassword = findViewById(R.id.txtCreatePasswordEdit);
         buttonLogin = findViewById(R.id.btnStartMagenta);
         textView = findViewById(R.id.btnRegisterNow);
+
+        checkBox();
+
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,42 +74,58 @@ public class Login extends AppCompatActivity {
                 String email,password;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
-                Intent intent = new Intent(getApplicationContext(), AppHolder.class);
-                startActivity(intent);
+//                Intent intent = new Intent(getApplicationContext(), AppHolder.class);
+//                startActivity(intent);
 
 
-//                if(TextUtils.isEmpty(email)){
-//                    Toast.makeText(Login.this,"Enter Email",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//
-//                if(TextUtils.isEmpty(password)){
-//                    Toast.makeText(Login.this,"Enter password",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
+                if(TextUtils.isEmpty(email)){
+                    Toast.makeText(Login.this,"Enter Email",Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
-//                mAuth.signInWithEmailAndPassword(email, password)
-//                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                Intent intent = new Intent(getApplicationContext(), AppHolder.class);
-//                                startActivity(intent);
-////                                if (task.isSuccessful()) {
-////                                    Toast.makeText(Login.this, "Login Successful",
-////                                            Toast.LENGTH_SHORT).show();
-////                                    Intent intent = new Intent(getApplicationContext(), AppHolder.class);
-////                                    startActivity(intent);
-////                                    finish();
-////                                } else {
-////
-////                                    Toast.makeText(Login.this, "Authentication failed.",
-////                                            Toast.LENGTH_SHORT).show();
-////
-////                                }
-//                            }
-//                        });
+                if(TextUtils.isEmpty(password)){
+                    Toast.makeText(Login.this,"Enter password",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                mAuth.signInWithEmailAndPassword(email, password)
+                        .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                    editor.putString("name","true");
+                                    editor.apply();
+
+
+                                    Toast.makeText(Login.this, "Login Successful",
+                                            Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getApplicationContext(), AppHolder.class);
+                                    startActivity(intent);
+                                    finish();
+                                } else {
+
+                                    Toast.makeText(Login.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
             }
         });
 
+    }
+
+    private void checkBox() {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        String check = sharedPreferences.getString("name","");
+        if(check.equals("true")){
+            Toast.makeText(Login.this, "Login Successful",
+                    Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getApplicationContext(), AppHolder.class);
+            startActivity(intent);
+            finish();
+        }
     }
 }
