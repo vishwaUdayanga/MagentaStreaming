@@ -14,6 +14,7 @@ import static com.example.magentastreaming.Activities.PlayerActivity.ARTIST;
 import static com.example.magentastreaming.Activities.PlayerActivity.ARTIST_NAME;
 import static com.example.magentastreaming.Activities.PlayerActivity.MUSIC_LAST_PLAYED;
 import static com.example.magentastreaming.Activities.PlayerActivity.SONG;
+import static com.example.magentastreaming.Activities.PlayerActivity.SONG_ID;
 import static com.example.magentastreaming.Activities.PlayerActivity.SONG_NAME;
 import static com.example.magentastreaming.Activities.PlayerActivity.bitmap;
 import static com.example.magentastreaming.Activities.PlayerActivity.mediaPlayer;
@@ -47,12 +48,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.magentastreaming.Activities.ActionPlaying;
+import com.example.magentastreaming.Activities.Login;
 import com.example.magentastreaming.Activities.NotificationReceiver;
 import com.example.magentastreaming.Activities.PlayerActivity;
 import com.example.magentastreaming.R;
@@ -102,10 +105,13 @@ public class MinimizedPlayer extends Fragment {
                     Intent intent = new Intent(getContext(), PlayerActivity.class);
                     startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getContext(), PlayerActivity.class);
-                    intent.putExtra("position", position);
-                    intent.putExtra("isNew", true);
-                    startActivity(intent);
+                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
+                    if (sharedPreferences.getString(SONG_ID, null) != null) {
+                        Intent intent = new Intent(getContext(), PlayerActivity.class);
+                        intent.putExtra("songId", sharedPreferences.getString(SONG_ID, null));
+                        startActivity(intent);
+                    }
+
                 }
             }
         });
@@ -273,6 +279,12 @@ public class MinimizedPlayer extends Fragment {
     private void minimizedPlay() {
         if (mediaPlayer == null) {
             SharedPreferences sharedPreferences = getContext().getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
+            position = 0;
+            for(int i=0; i<musicFiles.size(); i++) {
+                if (musicFiles.get(i).getSongId().toString().equalsIgnoreCase(sharedPreferences.getString(SONG_ID, null))) {
+                    position = i;
+                }
+            }
             uri = Uri.parse(sharedPreferences.getString(MUSIC_FILE, null));
             mediaPlayer = MediaPlayer.create(getContext(), uri);
             mediaPlayer.start();

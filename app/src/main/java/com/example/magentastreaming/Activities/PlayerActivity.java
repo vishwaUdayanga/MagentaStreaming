@@ -92,6 +92,8 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     public static final String ARTIST = "STORED_ARTIST";
     public static final String SONG = "STORED_SONG";
 
+    public static final String SONG_ID = "STORED_ID";
+
     public static final String ALBUM_ART = "STORED_ART";
     public static String SONG_NAME = "Song name";
 
@@ -255,6 +257,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
             try {
                 mp.reset();
                 setData();
+                checkLiked();
                 mp.setDataSource(listOfSongs.get(position).getClip_source());
                 durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
                 mp.prepare();
@@ -295,8 +298,6 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                         {
                             heart.setImageResource(R.drawable.heart_solid);
 
-                        } else {
-                            heart.setImageResource(R.drawable.heart);
                         }
                     } catch (Exception e) {
                         heart.setImageResource(R.drawable.heart);
@@ -315,11 +316,10 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
 
 
     private void filteredPlay() {
+        position = 0;
         for(int i=0; i<musicFiles.size(); i++) {
-            if (musicFiles.get(i).getSongId().equals(songId)) {
+            if (musicFiles.get(i).getSongId().toString().equalsIgnoreCase(songId.toString())) {
                 position = i;
-            } else {
-                position = 0;
             }
         }
         getActivityData();
@@ -376,6 +376,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
         editor.putString(ARTIST, listOfSongs.get(position).getArtist());
         editor.putString(SONG, listOfSongs.get(position).getTitle());
         editor.putString(ALBUM_ART, listOfSongs.get(position).getAlbumArt());
+        editor.putString(SONG_ID, listOfSongs.get(position).getSongId());
         editor.apply();
         SONG_NAME = listOfSongs.get(position).getTitle();
         ARTIST_NAME = listOfSongs.get(position).getArtist();
@@ -394,6 +395,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                 .into(coverArt);
         title.setText(musicFiles.get(position).getTitle());
         artist.setText(musicFiles.get(position).getArtist());
+        durationTotal.setText(String.valueOf(musicFiles.get(position).getDuration()));
         storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
 
         try {
@@ -497,9 +499,9 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
 
         try {
             setData();
-            if (listOfSongs != null) {
+            if (musicFiles != null) {
                 playPauseButton.setImageResource(R.drawable.pause_solid);
-                uri = Uri.parse(listOfSongs.get(position).getClip_source());
+                uri = Uri.parse(musicFiles.get(position).getClip_source());
             }
 
             if (mediaPlayer != null) {
@@ -512,9 +514,9 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                 mediaPlayer.start();
             }
             seekBar.setMax(mediaPlayer.getDuration() /  1000);
-            durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
-            SONG_NAME = listOfSongs.get(position).getTitle();
-            ARTIST_NAME = listOfSongs.get(position).getArtist();
+            durationTotal.setText(String.valueOf(musicFiles.get(position).getDuration()));
+            SONG_NAME = musicFiles.get(position).getTitle();
+            ARTIST_NAME = musicFiles.get(position).getArtist();
 
             if (mediaPlayer.isPlaying()) {
                 showNotification(R.drawable.pause_solid);

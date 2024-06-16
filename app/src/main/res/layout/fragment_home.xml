@@ -68,7 +68,7 @@
                 android:layout_below="@+id/main_title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Like That"
+                android:text="Flashing lights"
                 android:textColor="@color/white"
                 android:textSize="20dp"
                 android:textStyle="bold" />
@@ -80,7 +80,7 @@
                 android:layout_below="@+id/main_song_name"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="0dp"
-                android:text="Babymonster"
+                android:text="Kanye West"
                 android:textColor="@color/gray"
                 android:textSize="13dp" />
 
@@ -121,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/main_topic_home"
             android:layout_marginTop="0dp"
-            android:text="Babymonster"
+            android:text="From the library"
             android:textColor="@color/gray"
             android:textSize="13dp" />
 
