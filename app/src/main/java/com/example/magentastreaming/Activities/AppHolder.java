@@ -53,7 +53,7 @@ public class AppHolder extends AppCompatActivity {
 
     public static FragmentManager fragmentManager;
 
-    ImageView mainProfileImg;
+    public static ImageView mainProfileImg;
 
     FrameLayout minimizedPlayer;
 

@@ -1,8 +1,12 @@
 package com.example.magentastreaming.Activities;
 
+import static com.example.magentastreaming.Activities.AppHolder.mainProfileImg;
+import static com.example.magentastreaming.Activities.Login.SHARED_PREFS;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -54,7 +58,7 @@ public class EditProfile extends AppCompatActivity {
     ImageView profilePic;
 
     User appUser;
-    Button update_Button,cancel_Button;
+    Button update_Button,cancel_Button, logoutButton;
     TextView changeProfilePic;
     Uri selectedImageUri;
 
@@ -132,6 +136,13 @@ public class EditProfile extends AppCompatActivity {
             if(selectedImageUri!=null){
                 try {
                     getCurrentProfilePicStorage().putFile(selectedImageUri);
+
+                    RequestOptions requestOptions1 = new RequestOptions();
+                    requestOptions1 = requestOptions1.transforms(new CenterCrop(), new RoundedCorners(16));
+                    Glide.with(getApplicationContext()).asBitmap()
+                            .load(selectedImageUri)
+                            .apply(RequestOptions.circleCropTransform())
+                            .into(mainProfileImg);
                     Toast.makeText(getApplicationContext(), "Updated successfully", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -157,6 +168,21 @@ public class EditProfile extends AppCompatActivity {
         cancel_Button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                finish();
+            }
+        });
+
+        logoutButton = findViewById(R.id.logout_button);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("name","");
+                editor.apply();
+
+                Intent intent = new Intent(getApplicationContext(), Login.class);
+                startActivity(intent);
                 finish();
             }
         });
