@@ -1,6 +1,7 @@
 package com.example.magentastreaming.Models;
 
 public class MusicFiles {
+    private String songId;
     private String title;
     private String albumArt;
     private String albumName;
@@ -10,7 +11,7 @@ public class MusicFiles {
 
     private String clip_source;
 
-    public MusicFiles(String title, String albumArt, String albumName, double duration, String artist, String clip_source, String genre) {
+    public MusicFiles(String title, String albumArt, String albumName, double duration, String artist, String clip_source, String genre, String songId) {
         this.title = title;
         this.albumArt = albumArt;
         this.albumName = albumName;
@@ -18,6 +19,15 @@ public class MusicFiles {
         this.artist = artist;
         this.clip_source = clip_source;
         this.genre = genre;
+        this.songId = songId;
+    }
+
+    public String getSongId() {
+        return songId;
+    }
+
+    public void setSongId(String songId) {
+        this.songId = songId;
     }
 
     public String getClip_source() {

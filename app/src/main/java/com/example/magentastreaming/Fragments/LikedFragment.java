@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -73,9 +74,9 @@ public class LikedFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
-                    if(dataSnapshot.child("user").getValue().toString().contains(appUser.getUserID()))
+                    if(dataSnapshot.child("userID").getValue().toString().contains(appUser.getUserID()))
                     {
-                        liked.add(new Liked(dataSnapshot.child("user").getValue().toString(),dataSnapshot.child("song").getValue().toString()));
+                        liked.add(new Liked(dataSnapshot.child("userID").getValue().toString(),dataSnapshot.child("songID").getValue().toString()));
 
                     }
 
@@ -99,7 +100,7 @@ public class LikedFragment extends Fragment {
 
                         if(dataSnapshot.getKey().toString().contains(liked.get(i).getSongID()))
                         {
-                            songs.add(new MusicFiles(dataSnapshot.child("title").getValue().toString(), dataSnapshot.child("album_art").getValue().toString(), dataSnapshot.child("album_name").getValue().toString(), Double.parseDouble(dataSnapshot.child("duration").getValue().toString()), dataSnapshot.child("artist").getValue().toString(), dataSnapshot.child("clip_source").getValue().toString(), dataSnapshot.child("genre").getValue().toString()));
+                            songs.add(new MusicFiles(dataSnapshot.child("title").getValue().toString(), dataSnapshot.child("album_art").getValue().toString(), dataSnapshot.child("album_name").getValue().toString(), Double.parseDouble(dataSnapshot.child("duration").getValue().toString()), dataSnapshot.child("artist").getValue().toString(), dataSnapshot.child("clip_source").getValue().toString(), dataSnapshot.child("genre").getValue().toString(), dataSnapshot.getKey().toString()));
                         }
                         else {
 
@@ -121,6 +122,7 @@ public class LikedFragment extends Fragment {
 
         recyclerView.setAdapter(songAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 1, RecyclerView.VERTICAL, false));
+
 
 
         return view;

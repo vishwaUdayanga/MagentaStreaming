@@ -1,6 +1,7 @@
 package com.example.magentastreaming.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.magentastreaming.Activities.PlayerActivity;
 import com.example.magentastreaming.Models.MusicFiles;
 import com.example.magentastreaming.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,13 +31,13 @@ import java.util.ArrayList;
 
 public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder>  {
     private Context songContext;
-    private ArrayList<MusicFiles> songFiles;
+    private ArrayList<MusicFiles> musicFiles;
 
     StorageReference storageReference;
 
     public SongAdapter(Context songContext, ArrayList<MusicFiles> songFiles) {
         this.songContext = songContext;
-        this.songFiles = songFiles;
+        this.musicFiles = songFiles;
     }
 
     @NonNull
@@ -47,12 +49,10 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SongAdapter.SongViewHolder holder, int position) {
-        holder.songTitle.setText(songFiles.get(position).getTitle());
-        holder.songDuration.setText(String.valueOf(songFiles.get(position).getDuration()));
-        holder.songArtist.setText(songFiles.get(position).getArtist());
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(16));
-        storageReference = FirebaseStorage.getInstance().getReference("genre_arts/"+songFiles.get(position).getAlbumArt()+".jpg");
+        holder.songTitle.setText(musicFiles.get(position).getTitle());
+        holder.songDuration.setText(String.valueOf(musicFiles.get(position).getDuration()));
+        holder.songArtist.setText(musicFiles.get(position).getArtist());
+        storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+musicFiles.get(position).getAlbumArt()+".jpg");
 
         try {
             File localFile = File.createTempFile("tempFile", ".jpg");
@@ -84,19 +84,19 @@ public class SongAdapter extends RecyclerView.Adapter<SongAdapter.SongViewHolder
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(genreContext, PlayerActivity.class);
-//                intent.putExtra("position", position);
-//                genreContext.startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(songContext, PlayerActivity.class);
+                intent.putExtra("songId", musicFiles.get(position).getSongId());
+                songContext.startActivity(intent);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return songFiles.size();
+        return musicFiles.size();
     }
 
     public class SongViewHolder extends RecyclerView.ViewHolder {

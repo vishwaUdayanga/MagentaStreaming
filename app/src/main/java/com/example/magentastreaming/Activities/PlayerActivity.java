@@ -31,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,11 +42,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.magentastreaming.Models.Liked;
 import com.example.magentastreaming.Models.MusicFiles;
+import com.example.magentastreaming.Models.User;
 import com.example.magentastreaming.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -59,6 +70,8 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     MusicService musicService;
     TextView title, artist, durationPlayed, durationTotal;
     ImageView coverArt, nextButton, prevButton, backButton;
+
+    boolean found = false;
 
     public static FloatingActionButton playPauseButton;
     SeekBar seekBar;
@@ -87,17 +100,99 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
 
     public static MediaSessionCompat mediaSession;
 
+    ImageView heart;
+
+    DatabaseReference databaseReference2;
+    FirebaseAuth auth;
+
+    FirebaseUser user;
+    User appUser;
+
+    String likedId;
+
+    DatabaseReference fetchingSong;
+
+    String songId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         initViews();
         boolean isNew = getIntent().getBooleanExtra("isNew", false);
-        if (isNew) {
+        songId = getIntent().getStringExtra("songId");
+        if (songId != null) {
+            filteredPlay();
+        } else if (isNew) {
             getActivityData();
         } else {
             resumeMusic();
         }
+
+        heart = findViewById(R.id.like_logo);
+
+        //like
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
+
+        appUser = new User(user.getEmail(),user.getUid());
+
+
+        heart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                databaseReference2 = FirebaseDatabase.getInstance().getReference().child("liked");
+
+                if (databaseReference2 == null) {
+                    found = false;
+                }
+                databaseReference2.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                            try {
+                                if(dataSnapshot.child("userID").getValue().toString().contains(appUser.getUserID()) && dataSnapshot.child("songID").getValue().toString().contains(musicFiles.get(position).getSongId()))
+                                {
+                                    found = true;
+                                    likedId = dataSnapshot.getKey().toString();
+
+                                } else {
+                                    found = false;
+                                    likedId = "";
+                                }
+                            } catch (Exception e) {
+                                found = false;
+                            }
+
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("Error", "Error");
+                        found = false;
+                    }
+                });
+
+                if (!found) {
+                    Liked newLike = new Liked(appUser.getUserID(), musicFiles.get(position).getSongId());
+                    databaseReference2.push().setValue(newLike);
+                    heart.setImageResource(R.drawable.heart_solid);
+                } else {
+                    try {
+                        databaseReference2.child(likedId).removeValue().addOnSuccessListener(aVoid -> {
+                            heart.setImageResource(R.drawable.heart);
+                        }).addOnFailureListener(e -> {
+                            heart.setImageResource(R.drawable.heart_solid);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
 
 
         //Button listeners
@@ -181,19 +276,64 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
 
     }
 
+
+
+    private void filteredPlay() {
+        for(int i=0; i<musicFiles.size(); i++) {
+            if (musicFiles.get(i).getSongId().equals(songId)) {
+                position = i;
+            } else {
+                position = 0;
+            }
+        }
+        getActivityData();
+    }
+
     private void resumeMusic() {
         setData();
+        showNotification(R.drawable.pause_solid);
         seekBar.setMax(mediaPlayer.getDuration() / 1000);
     }
 
 //    @Override
 //    protected void onResume() {
-////        playThreadButton();
-////        nextThreadButton();
-////        prevThreadButton();
-//        Intent intent = new Intent(this, MusicService.class);
-//        bindService(intent, this, BIND_AUTO_CREATE);
 //        super.onResume();
+//
+//        try {
+//            databaseReference2.addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                        try {
+//                            if(dataSnapshot.child("userID").getValue().toString().contains(appUser.getUserID()) && dataSnapshot.child("songID").getValue().toString().contains(musicFiles.get(position).getSongId()))
+//                            {
+//                                found = true;
+//
+//                            } else {
+//                                found = false;
+//                            }
+//                        } catch (Exception e) {
+//                            found = false;
+//                        }
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    Log.e("Error", "Error");
+//                }
+//            });
+//        } catch (Exception e) {
+//
+//            e.printStackTrace();
+//        }
+//
+//        if (!found) {
+//            heart.setImageResource(R.drawable.heart);
+//        } else {
+//            heart.setImageResource(R.drawable.heart_solid);
+//        }
 //    }
 
 //    @Override
@@ -402,6 +542,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
         editor.apply();
         seekBar.setMax(mediaPlayer.getDuration() /  1000);
         durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
+        showNotification(R.drawable.pause_solid);
     }
 
     private void setData() {
