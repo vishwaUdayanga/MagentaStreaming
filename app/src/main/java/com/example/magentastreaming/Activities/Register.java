@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class Register extends AppCompatActivity {
 //    Button btnStartAccount;
 
-    TextInputEditText editTextEmail,editTextPassword;
+    TextInputEditText editTextEmail,editTextPassword, editTextConfirmPassword;
     Button buttonReg;
     FirebaseAuth mAuth;
     Button textView;
@@ -45,6 +45,7 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.txtEmailEditRej);
         editTextPassword = findViewById(R.id.txtCreatePasswordEditRej);
+        editTextConfirmPassword = findViewById(R.id.txtCreatePasswordEdit);
         buttonReg = findViewById(R.id.btnStartAccount);
         textView = findViewById(R.id.loginNow);
         textView.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +61,10 @@ public class Register extends AppCompatActivity {
         buttonReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email,password;
+                String email,password, confirmPassword;
                 email = String.valueOf(editTextEmail.getText());
                 password = String.valueOf(editTextPassword.getText());
+                confirmPassword = String.valueOf(editTextConfirmPassword.getText());
 
                 if(TextUtils.isEmpty(email)){
                     Toast.makeText(Register.this,"Enter Email",Toast.LENGTH_SHORT).show();
@@ -74,6 +76,11 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
+                if (!(password.equalsIgnoreCase(confirmPassword))) {
+                    Toast.makeText(Register.this,"Password does not match",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -81,7 +88,7 @@ public class Register extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     Toast.makeText(Register.this, "Account created.",
                                             Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getApplicationContext(), AppHolder.class);
+                                    Intent intent = new Intent(getApplicationContext(), Login.class);
                                     startActivity(intent);
                                 } else {
                                     // If sign in fails, display a message to the user.

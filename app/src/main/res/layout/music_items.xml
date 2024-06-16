@@ -27,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@+id/music_img"
         android:text="How Long"
+        android:layout_marginTop="10dp"
         android:textColor="@color/white"
         android:textSize="25px"
         app:layout_constraintLeft_toLeftOf="parent"

@@ -64,6 +64,8 @@ public class AppHolder extends AppCompatActivity {
     FirebaseUser user;
     User appUser;
 
+    ImageView topSearch;
+
     public static boolean SHOW_MINI_PLAYER = false;
 
     public static final String MUSIC_LAST_PLAYED = "LAST_PLAYED";
@@ -194,6 +196,17 @@ public class AppHolder extends AppCompatActivity {
                     }
                 }
         );
+
+        topSearch = findViewById(R.id.top_search_button);
+        topSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                fragmentManager.beginTransaction().replace(R.id.frame_layout, new SearchFragment()).setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).commit();
+                tabLayout.getTabAt(3).getIcon().setColorFilter(getResources().getColor(R.color.pink) , PorterDuff.Mode.SRC_IN);
+                tabLayout.getTabAt(0).getIcon().setColorFilter(getResources().getColor(R.color.gray) , PorterDuff.Mode.SRC_IN);
+                tabLayout.getTabAt(3).select();
+            }
+        });
     }
 
     @Override

@@ -98,9 +98,6 @@ public class Login extends AppCompatActivity {
                                     editor.putString("name","true");
                                     editor.apply();
 
-
-                                    Toast.makeText(Login.this, "Login Successful",
-                                            Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), AppHolder.class);
                                     startActivity(intent);
                                     finish();
@@ -121,8 +118,6 @@ public class Login extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         String check = sharedPreferences.getString("name","");
         if(check.equals("true")){
-            Toast.makeText(Login.this, "Login Successful",
-                    Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(getApplicationContext(), AppHolder.class);
             startActivity(intent);
             finish();

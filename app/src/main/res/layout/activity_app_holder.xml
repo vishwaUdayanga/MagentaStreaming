@@ -18,11 +18,12 @@
         android:padding="15dp">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/bell"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/search"
             android:foregroundGravity="left"
-            android:layout_centerVertical="true"/>
+            android:layout_centerVertical="true"
+            android:id="@+id/top_search_button"/>
 
         <ImageView
             android:layout_width="wrap_content"

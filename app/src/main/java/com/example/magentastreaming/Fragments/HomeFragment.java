@@ -3,17 +3,20 @@ package com.example.magentastreaming.Fragments;
 //import static com.example.magentastreaming.Activities.AppHolder.viewPager2;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.magentastreaming.Activities.PlayerActivity;
 import com.example.magentastreaming.Adapters.MusicAdapter;
 import com.example.magentastreaming.Models.MusicFiles;
 import com.example.magentastreaming.R;
@@ -33,6 +36,8 @@ public class HomeFragment extends Fragment {
     DatabaseReference databaseReference;
 
     public static ArrayList<MusicFiles> musicFiles;
+
+    Button mainButton;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -65,6 +70,15 @@ public class HomeFragment extends Fragment {
         recyclerView.setAdapter(musicAdapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2, RecyclerView.VERTICAL, false));
 
+        mainButton = view.findViewById(R.id.main_song_button);
+        mainButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PlayerActivity.class);
+                intent.putExtra("mainSong", true);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }

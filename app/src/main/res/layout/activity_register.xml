@@ -55,7 +55,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtCreatePasswordEditRej"
-            android:hint="Create a password" />
+            android:hint="Create a password"
+            android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -69,6 +70,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/txtCreatePasswordEdit"
+            android:inputType="textPassword"
             android:hint="Confirm your password" />
     </com.google.android.material.textfield.TextInputLayout>
 
