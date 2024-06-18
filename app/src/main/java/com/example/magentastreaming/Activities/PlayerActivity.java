@@ -158,7 +158,7 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                         for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                             try {
-                                if(dataSnapshot.child("userID").getValue().toString().contains(appUser.getUserID()) && dataSnapshot.child("songID").getValue().toString().contains(musicFiles.get(position).getSongId()))
+                                if(dataSnapshot.child("userID").getValue().toString().equals(appUser.getUserID()) && dataSnapshot.child("songID").getValue().toString().equals(musicFiles.get(position).getSongId()))
                                 {
                                     found = true;
                                     likedId = dataSnapshot.getKey().toString();
@@ -182,9 +182,9 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                 });
 
                 if (!found) {
+                    heart.setImageResource(R.drawable.heart_solid);
                     Liked newLike = new Liked(appUser.getUserID(), musicFiles.get(position).getSongId());
                     databaseReference2.push().setValue(newLike);
-                    heart.setImageResource(R.drawable.heart_solid);
                 } else {
                     try {
                         databaseReference2.child(likedId).removeValue().addOnSuccessListener(aVoid -> {
@@ -258,8 +258,8 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
                 mp.reset();
                 setData();
                 checkLiked();
-                mp.setDataSource(listOfSongs.get(position).getClip_source());
-                durationTotal.setText(String.valueOf(listOfSongs.get(position).getDuration()));
+                mp.setDataSource(musicFiles.get(position).getClip_source());
+                durationTotal.setText(String.valueOf(musicFiles.get(position).getDuration()));
                 mp.prepare();
                 mp.start();
             } catch (IOException e) {
@@ -285,25 +285,23 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
     public void checkLiked() {
         databaseReference2 = FirebaseDatabase.getInstance().getReference().child("liked");
 
-        if (databaseReference2 == null) {
-            found = false;
-        }
         databaseReference2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                     try {
-                        if(dataSnapshot.child("userID").getValue().toString().contains(appUser.getUserID()) && dataSnapshot.child("songID").getValue().toString().contains(musicFiles.get(position).getSongId()))
+                        if(dataSnapshot.child("userID").getValue().toString().equals(appUser.getUserID()) && dataSnapshot.child("songID").getValue().toString().equals(musicFiles.get(position).getSongId()))
                         {
                             heart.setImageResource(R.drawable.heart_solid);
+                            return;
 
                         }
                     } catch (Exception e) {
                         heart.setImageResource(R.drawable.heart);
                     }
-
                 }
+                heart.setImageResource(R.drawable.heart);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -329,9 +327,16 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
 
     private void resumeMusic() {
         setData();
-        showNotification(R.drawable.pause_solid);
+        if (mediaPlayer.isPlaying()) {
+            showNotification(R.drawable.pause_solid);
+            playPauseButton.setImageResource(R.drawable.pause_solid);
+            playButton.setImageResource(R.drawable.pause);
+        } else {
+            showNotification(R.drawable.play_solid);
+            playPauseButton.setImageResource(R.drawable.play_solid);
+            playButton.setImageResource(R.drawable.play_solid);
+        }
         checkLiked();
-        playButton.setImageResource(R.drawable.pause);
         seekBar.setMax(mediaPlayer.getDuration() / 1000);
     }
 

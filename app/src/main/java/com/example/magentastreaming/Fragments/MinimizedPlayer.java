@@ -105,13 +105,16 @@ public class MinimizedPlayer extends Fragment {
                     Intent intent = new Intent(getContext(), PlayerActivity.class);
                     startActivity(intent);
                 } else {
-                    SharedPreferences sharedPreferences = getContext().getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
-                    if (sharedPreferences.getString(SONG_ID, null) != null) {
-                        Intent intent = new Intent(getContext(), PlayerActivity.class);
-                        intent.putExtra("songId", sharedPreferences.getString(SONG_ID, null));
-                        startActivity(intent);
+                    try {
+                        SharedPreferences sharedPreferences = getContext().getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
+                        if (sharedPreferences.getString(SONG_ID, null) != null) {
+                            Intent intent = new Intent(getContext(), PlayerActivity.class);
+                            intent.putExtra("songId", sharedPreferences.getString(SONG_ID, null));
+                            startActivity(intent);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-
                 }
             }
         });
@@ -278,26 +281,34 @@ public class MinimizedPlayer extends Fragment {
 
     private void minimizedPlay() {
         if (mediaPlayer == null) {
-            SharedPreferences sharedPreferences = getContext().getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
-            position = 0;
-            for(int i=0; i<musicFiles.size(); i++) {
-                if (musicFiles.get(i).getSongId().toString().equalsIgnoreCase(sharedPreferences.getString(SONG_ID, null))) {
-                    position = i;
+            try {
+                SharedPreferences sharedPreferences = getContext().getSharedPreferences(MUSIC_LAST_PLAYED, MODE_PRIVATE);
+                position = 0;
+                for(int i=0; i<musicFiles.size(); i++) {
+                    if (musicFiles.get(i).getSongId().toString().equalsIgnoreCase(sharedPreferences.getString(SONG_ID, null))) {
+                        position = i;
+                    }
                 }
+                uri = Uri.parse(sharedPreferences.getString(MUSIC_FILE, null));
+                mediaPlayer = MediaPlayer.create(getContext(), uri);
+                mediaPlayer.start();
+                playButton.setImageResource(R.drawable.pause);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            uri = Uri.parse(sharedPreferences.getString(MUSIC_FILE, null));
-            mediaPlayer = MediaPlayer.create(getContext(), uri);
-            mediaPlayer.start();
-            playButton.setImageResource(R.drawable.pause);
         }
-        if (mediaPlayer.isPlaying()) {
-            playButton.setImageResource(R.drawable.play_solid);
-            mediaPlayer.pause();
-            showNotification(R.drawable.play_solid);
-        } else {
-            playButton.setImageResource(R.drawable.pause);
-            mediaPlayer.start();
-            showNotification(R.drawable.pause_solid);
+        try {
+            if (mediaPlayer.isPlaying()) {
+                playButton.setImageResource(R.drawable.play_solid);
+                mediaPlayer.pause();
+                showNotification(R.drawable.play_solid);
+            } else {
+                playButton.setImageResource(R.drawable.pause);
+                mediaPlayer.start();
+                showNotification(R.drawable.pause_solid);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

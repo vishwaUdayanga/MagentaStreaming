@@ -76,7 +76,7 @@ public class Register extends AppCompatActivity {
                     return;
                 }
 
-                if (!(password.equalsIgnoreCase(confirmPassword))) {
+                if (!(password.equals(confirmPassword))) {
                     Toast.makeText(Register.this,"Password does not match",Toast.LENGTH_SHORT).show();
                     return;
                 }
