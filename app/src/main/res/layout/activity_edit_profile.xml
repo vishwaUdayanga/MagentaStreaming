@@ -20,7 +20,7 @@
     <TextView
         android:id="@+id/change_profile_btn"
         android:layout_below="@+id/profile_image"
-        android:text="Change Profile picture"
+        android:text="Change Profile Picture"
         android:layout_centerHorizontal="true"
         android:textSize="21dp"
         android:textColor="@color/white"

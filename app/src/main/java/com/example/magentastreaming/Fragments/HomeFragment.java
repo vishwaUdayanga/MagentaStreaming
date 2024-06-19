@@ -10,12 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.magentastreaming.Activities.Login;
 import com.example.magentastreaming.Activities.PlayerActivity;
 import com.example.magentastreaming.Adapters.MusicAdapter;
 import com.example.magentastreaming.Models.MusicFiles;
@@ -74,9 +76,15 @@ public class HomeFragment extends Fragment {
         mainButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PlayerActivity.class);
-                intent.putExtra("mainSong", true);
-                startActivity(intent);
+                if (musicFiles.size() > 1 ) {
+                    Intent intent = new Intent(getContext(), PlayerActivity.class);
+                    intent.putExtra("mainSong", true);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getContext(), "Wait for connection.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

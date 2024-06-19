@@ -257,7 +257,10 @@ public class PlayerActivity extends AppCompatActivity implements ServiceConnecti
             try {
                 mp.reset();
                 setData();
+                SONG_NAME = musicFiles.get(position).getTitle();
+                ARTIST_NAME = musicFiles.get(position).getArtist();
                 checkLiked();
+                showNotification(R.drawable.pause_solid);
                 mp.setDataSource(musicFiles.get(position).getClip_source());
                 durationTotal.setText(String.valueOf(musicFiles.get(position).getDuration()));
                 mp.prepare();

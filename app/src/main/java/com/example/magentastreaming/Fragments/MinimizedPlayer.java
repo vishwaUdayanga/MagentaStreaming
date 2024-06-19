@@ -337,6 +337,8 @@ public class MinimizedPlayer extends Fragment {
                 } else {
                     songName.setText(sharedPreferences.getString(SONG, null));
                     artist.setText(sharedPreferences.getString(ARTIST, null));
+                    SONG_NAME = sharedPreferences.getString(SONG, null);
+                    ARTIST_NAME = sharedPreferences.getString(ARTIST, null);
                     try {
                         storageReference = FirebaseStorage.getInstance().getReference("album_arts/"+sharedPreferences.getString(ALBUM_ART, null)+".jpg");
                         File localFile = File.createTempFile("tempFile", ".jpg");
